@@ -1,0 +1,37 @@
+datasource db {
+  url      = env("DATABASE_URL")
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Define the `User` table in the database
+model User {
+  id         Int     @id
+  avatar_url String?
+  login      String?
+  followedBy User[]  @relation("UserFollows", references: [id])
+  following  User[]  @relation("UserFollows", references: [id])
+  Repo       Repo[]
+  createAt   String?
+}
+
+model Repo {
+  id         Int      @id
+  name       String?
+  Branch     Branch[]
+  createDate String?
+  owner      User?    @relation(fields: [ownerid], references: [id])
+  ownerid    Int?
+}
+
+model Branch {
+  id     Int     @id
+  name   String?
+  Repo   Repo?   @relation(fields: [repoId], references: [id])
+  repoId Int?
+}
+
+
