@@ -9,13 +9,13 @@ generator client {
 
 // Define the `User` table in the database
 model User {
-  id         Int     @id
-  avatar_url String?
-  login      String?
-  followedBy User[]  @relation("UserFollows", references: [id])
-  following  User[]  @relation("UserFollows", references: [id])
-  Repo       Repo[]
-  createAt   String?
+  id         Int    @id
+  avatar_url String
+  login      String @unique
+  nbFollower Int
+  nbFollowing Int
+  Repo       Repo[] 
+  createAt   String
 }
 
 model Repo {
@@ -28,10 +28,8 @@ model Repo {
 }
 
 model Branch {
-  id     Int     @id
+  id     Int @id @default(autoincrement())
   name   String?
   Repo   Repo?   @relation(fields: [repoId], references: [id])
-  repoId Int?
+  repoId Int
 }
-
-
