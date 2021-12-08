@@ -37,6 +37,8 @@ router.get('/:login', function(req, res, next) {
                     data: {
                         id: repos_user.data[i].id,
                         name: repos_user.data[i].name,
+                        description: repos_user.data[i].description,
+                        language: repos_user.data[i].language,
                         Branch: undefined,
                         createDate: repos_user.data[i].created_at,
                         ownerid: new_user.id
