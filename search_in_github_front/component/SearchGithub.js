@@ -5,7 +5,7 @@ import { StyleSheet, Text, View, TextInput , Image , TouchableOpacity} from 'rea
 
 
 
-export default function SearchGithub(){
+export default function SearchGithub({navigation}){
     
     const [login , setLogin ] = useState("")
 
@@ -22,7 +22,7 @@ export default function SearchGithub(){
                 placeholder='search in github.....'
             />
 
-            <TouchableOpacity style={styles.touchable} onPress={() => console.log("HELLO WORLD")}>
+            <TouchableOpacity style={styles.touchable} onPress={() => navigation.navigate("User")}>
                 <Text style={styles.text}>Search</Text>
             </TouchableOpacity>
 
@@ -67,5 +67,5 @@ const styles = StyleSheet.create({
         fontSize: 20,
         color: "white"
     }
-  });
+});
   
