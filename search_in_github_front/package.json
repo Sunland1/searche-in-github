@@ -24,6 +24,7 @@
     "react-native-dropdown": "^0.0.6",
     "react-native-dropdown-picker": "^5.2.3",
     "react-native-markdown-view": "^1.1.4",
+    "react-native-safe-area-context": "^3.3.2",
     "react-native-svg": "^12.1.1",
     "react-native-web": "0.17.1"
   },

@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React , {useState} from 'react';
-import { StyleSheet, Text, View, TextInput , Image , TouchableOpacity} from 'react-native';
+import { StyleSheet, Text, View, TextInput , Image , TouchableOpacity ,ActivityIndicator } from 'react-native';
 
 
 import {getUser} from '../api/github_api'
@@ -9,9 +9,18 @@ import {getUser} from '../api/github_api'
 
 
 export default function SearchGithub({navigation}){
+    const [isLoading , setIsloading] = useState(false)
     const [login , setLogin ] = useState("")
 
+
+    function loadingDisplay(){
+        if(isLoading){
+            return <Text>Loading <ActivityIndicator size="small" color="#0000ff" /></Text>
+        }
+    }
+
     async function loadUser(){
+        setIsloading(true)
         if(login === ""){
             alert('Need a username')
         }else{
@@ -19,6 +28,7 @@ export default function SearchGithub({navigation}){
             if(user === undefined || user === null ){
                 alert("User not found")
             }else{
+                setIsloading(false)
                 navigation.navigate("User" , {
                     user: user
                 })
@@ -44,6 +54,8 @@ export default function SearchGithub({navigation}){
             <TouchableOpacity style={styles.touchable} onPress={() => loadUser()}>
                 <Text style={styles.text}>Search</Text>
             </TouchableOpacity>
+
+            {loadingDisplay()}
 
         </View>
     );
