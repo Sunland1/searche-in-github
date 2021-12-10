@@ -8,7 +8,7 @@ class ApiGitHub {
     static async getUser(login){
         return await axios.get(URL_GIT+"/users/"+login , {
             headers: {
-                "Authorization" : TOKEN
+                "Authorization" : "token " + TOKEN
             }
         })
     }
@@ -16,7 +16,7 @@ class ApiGitHub {
     static async getRepo(login){
         return await axios.get(URL_GIT+"/users/"+login + "/repos" , {
             headers: {
-                "Authorization" : TOKEN
+                "Authorization" : "token " + TOKEN
             }
         })
     }
@@ -26,7 +26,7 @@ class ApiGitHub {
         let URL = URL_GIT + "/repos/" + login + "/" + repo + "/branches"
         return await axios.get(URL , {
             headers: {
-                "Authorization" : TOKEN
+                "Authorization" : "token " + TOKEN
             }
         })
     }

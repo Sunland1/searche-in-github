@@ -1,20 +1,24 @@
-import { StatusBar } from 'expo-status-bar';
-import React , {useState} from 'react';
+import React , {useEffect, useState} from 'react';
 import { StyleSheet, Text, View, ScrollView , Image , TouchableOpacity} from 'react-native';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faCoffee } from '@fortawesome/free-solid-svg-icons'
 
 
+import { getRepo } from '../api/github_api';
 
+const converDate = (date) => {
+    return date.split('T')[0] 
+}
 
-const listrepo = (repos) => {
+const listrepo = (repos , navigation , login) => {
     let reposList = []
-    for(let i=0 ; i < 20 ; i++ ){
+    for(let i=0 ; i < repos.length ; i++ ){
         reposList.push(
-            <TouchableOpacity key={i} style={styles.repos}>
-                <Text style={styles.textInformationTouchAble}>search-in-github</Text>
-                <Text style={styles.textInformationTouchAble}>JS</Text>
-                <Text style={styles.textInformationTouchAble}>01/01/2021</Text>
+            <TouchableOpacity key={i} style={styles.repos} onPress={() => navigation.navigate("Repo" , {
+                repo: repos[i],
+                login: login
+            })}>
+                <Text style={styles.textInformationTouchAble}>{repos[i].name}</Text>
+                <Text style={styles.textInformationTouchAble}>{repos[i].language}</Text>
+                <Text style={styles.textInformationTouchAble}>{converDate(repos[i].createDate)}</Text>
             </TouchableOpacity>
         )
     } 
@@ -22,20 +26,31 @@ const listrepo = (repos) => {
 }
 
 
-export default function User(){
+export default function User({ route , navigation}){
+
+    const [repos , setRepos] = useState([])
+    const {user} = route.params
+
+    useEffect(async () => {
+        let repos = await getRepo(user.id)
+        setRepos(repos)
+    } , [])
+
     return(
         <View style={styles.container}>
             <View style={styles.header}>
                 <Image
                     style={styles.profilImage}
-                    source={require('../assets/github.png')}
+                    source={{
+                        uri: user.avatar_url
+                    }}
                 />
                 <View style={styles.blocInformation}>
-                    <Text style={styles.textUser}>Sunland</Text>
+                    <Text style={styles.textUser}>{user.login.charAt(0).toUpperCase() + user.login.slice(1)}</Text>
                     <View style={styles.userInformation}>
-                        <Text style={styles.textInformation}>12 follower</Text>
-                        <Text style={styles.textInformation}>8 following</Text>
-                        <Text style={styles.textInformation}>7 repos</Text>
+                        <Text style={styles.textInformation}>{user.nbFollower} follower</Text>
+                        <Text style={styles.textInformation}>{user.nbFollowing} following</Text>
+                        <Text style={styles.textInformation}>{repos.length} repos</Text>
                     </View>
                 </View>
             </View>
@@ -43,7 +58,7 @@ export default function User(){
             <View style={styles.body}>
                 <Text style={styles.title}>Repo :</Text>
                 <ScrollView style={styles.scrollview}>
-                    {listrepo()}
+                    {listrepo(repos , navigation ,user.login)}
                 </ScrollView>
             </View>
 
@@ -100,9 +115,9 @@ const styles = StyleSheet.create({
 
     textUser : {
         textAlign: "center",
-        marginLeft: "10%",
+        marginLeft: "9%",
         marginTop: "5%",
-        fontSize: 45
+        fontSize: 40
     },
 
     repos: {

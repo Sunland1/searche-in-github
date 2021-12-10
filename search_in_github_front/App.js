@@ -9,6 +9,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 //import components
 import SearchGithub from './component/SearchGithub';
 import User from './component/User';
+import Repo from './component/Repo';
 
 
 
@@ -22,6 +23,7 @@ export default function App() {
       <Stack.Navigator>
         <Stack.Screen name="SearchInGithub" component={SearchGithub} />
         <Stack.Screen name="User" component={User} />
+        <Stack.Screen name="Repo" component={Repo} />
       </Stack.Navigator>
     </NavigationContainer>
   );

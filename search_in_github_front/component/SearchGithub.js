@@ -3,11 +3,30 @@ import React , {useState} from 'react';
 import { StyleSheet, Text, View, TextInput , Image , TouchableOpacity} from 'react-native';
 
 
+import {getUser} from '../api/github_api'
+
+
 
 
 export default function SearchGithub({navigation}){
-    
     const [login , setLogin ] = useState("")
+
+    async function loadUser(){
+        if(login === ""){
+            alert('Need a username')
+        }else{
+            let user = await getUser(login)
+            if(user === undefined || user === null ){
+                alert("User not found")
+            }else{
+                navigation.navigate("User" , {
+                    user: user
+                })
+            }
+        }
+        
+    }
+
 
     return (
         <View style={styles.container}>
@@ -22,7 +41,7 @@ export default function SearchGithub({navigation}){
                 placeholder='search in github.....'
             />
 
-            <TouchableOpacity style={styles.touchable} onPress={() => navigation.navigate("User")}>
+            <TouchableOpacity style={styles.touchable} onPress={() => loadUser()}>
                 <Text style={styles.text}>Search</Text>
             </TouchableOpacity>
 

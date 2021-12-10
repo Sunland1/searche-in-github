@@ -13,9 +13,10 @@ router.get('/:login', function(req, res, next) {
     //Externaliser pour faire une resync si l'utilisateur le veux !
     prisma.user.findUnique({
         where: {
-            login: login.charAt(0).toUpperCase() + login.slice(1)
+            login: login.charAt(0).toLowerCase() + login.slice(1)
         }
     }).then( async (result) => {
+        console.log()
         if(result === null){
             let user = await api_github.getUser(login)
             let repos_user = await api_github.getRepo(login)
@@ -24,7 +25,7 @@ router.get('/:login', function(req, res, next) {
                 data: {
                     id: user.data.id,
                     avatar_url: user.data.avatar_url,
-                    login: user.data.login,
+                    login: login.charAt(0).toLowerCase() + login.slice(1),
                     nbFollower: user.data.followers,
                     nbFollowing: user.data.following,
                     Repo: undefined,
@@ -54,7 +55,7 @@ router.get('/:login', function(req, res, next) {
                     })
                 }
             }
-            res.sendStatus(200)
+            res.status(201).json(new_user)
         }else{
             res.status(200).json(result)
         }
