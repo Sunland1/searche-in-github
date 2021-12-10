@@ -1,4 +1,4 @@
-# searche-in-github 🚀
+# search-in-github 🚀
 
 don't forget the npm install :)
 
